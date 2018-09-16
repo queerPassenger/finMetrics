@@ -1,0 +1,23 @@
+{
+  "name": "finAnalyser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/queerPassenger/finAnalyser.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/queerPassenger/finAnalyser/issues"
+  },
+  "homepage": "https://github.com/queerPassenger/finAnalyser#readme",
+  "dependencies": {
+    "pdfreader": "^0.2.5"
+  }
+}
