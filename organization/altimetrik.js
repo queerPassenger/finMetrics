@@ -70,7 +70,7 @@ const analyseData=(_object)=>{
                         alreadyUsedInd.push(matchedInd);
                         alreadyUsedInd.push(matchedInd+1);
                         currentObj.val=rawDataObj[matchedInd+1].trim();
-                    }
+                    }   
                 }
                 else if(currentObj.type==='split'){
                     for(let j=0;j<rawDataObj.length;j++){
@@ -80,23 +80,30 @@ const analyseData=(_object)=>{
                         if(rawDataObj[j].indexOf(currentObj.access[0])!==-1){
                             currentObj.val=rawDataObj[j].split(currentObj.access[1])[1].replace('- ',' - ').trim();
                             alreadyUsedInd.push(j);
+                            break;
                         }
-                    }
+                    }                    
                 }
+                if(currentObj.numConvert){
+                    currentObj.val=Number(currentObj.val.replace(',',''));
+                }
+                
             }
         }
         analysedData.push(newObj);
     }
     return analysedData;
 }
-const fileReader=()=>{
+const fileReader=(cb)=>{
     rawData((_object)=>{        
         let obj=analyseData(_object);
         fs.writeFile("./des/analysedData.json",JSON.stringify(obj),(err)=>{
             if(!err){
                 console.log('DONE');
+                cb(obj);
             }
         })
+        
     });
 }
 
