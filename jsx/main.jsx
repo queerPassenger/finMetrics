@@ -1,4 +1,5 @@
 import React from 'react';
+import StartUp from './startUp.jsx';
 
 class Main extends React.Component{
     constructor(props){
@@ -26,10 +27,13 @@ class Main extends React.Component{
     render(){
         return(
             <div className="finMetrics_wrapper">
-                <div className="start_action">
-                    <button onClick={this.start.bind(this)}>Start</button>
-                </div>
-                
+                <StartUp />
+                {/* <div className="finMetrics_background"
+                <div className="finMetricsNormal">
+                    <div className="start_action">
+                        <button onClick={this.start.bind(this)}>Start</button>
+                    </div>
+                </div>              */}   
             </div>
         )
     }

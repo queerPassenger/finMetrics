@@ -3,7 +3,7 @@ module.exports = {
       inline:true,
       port: 8007
     },
-    entry: './script/entry.jsx',
+    entry: './jsx/entry.jsx',
     output: { path: __dirname, filename: './scripts/bundle.js' },
   
     module: {
