@@ -161,6 +161,13 @@ let boilerPlate={
                 access:['House Rent Allowance'],
                 numConvert:true,
             },
+            conveyance:{
+                val:'',
+                label:'Conveyance Allowance',
+                type:'index_next',
+                access:['Conveyance Allowance'],
+                numConvert:true,
+            },
             fbp:{
                 val:'',
                 label:'Flexible Benefit Plan',

@@ -2,8 +2,8 @@
 let pdfreader = require('pdfreader');
 let boilerPlate=require('../boilerplate.js');
 let fs = require('fs');
-let fileList=['May-2018.PDF','June-2018.PDF','July-2018.PDF','August-2018.PDF'];
-let inputFilePath='./src/';
+let fileList=['December-2017.PDF','January-2018.PDF','February-2018.PDF','March-2018.PDF','April-2018.PDF','May-2018.PDF','June-2018.PDF','July-2018.PDF','August-2018.PDF','September-2018.PDF'];
+let inputFilePath='C:/src/';
 let outputFilePath='./des/';
 let inputFileExt='.pdf';
 let outputFileExt='.txt';
@@ -17,7 +17,8 @@ function rawData(cb){
         file:fileList[i],
         data:[],
     };
-    let count=1;    
+    let count=1;  
+
     new pdfreader.PdfReader().parseFileItems(inputFilePath+fileList[i]+inputFileExt,(err, item)=>{      
         if (!item || item.page){        
             if(count===maxPageCount){
@@ -56,6 +57,7 @@ const analyseData=(_object)=>{
             let subDataKeys=Object.keys(newObj.data[dataKeys[k]]);
             for(let l=0;l<subDataKeys.length;l++){
                 let currentObj=newObj.data[dataKeys[k]][subDataKeys[l]];
+                let nextObj=subDataKeys[l+1]?newObj.data[dataKeys[k]][subDataKeys[l+1]]:{access:['nothing']};
                 if(currentObj.type==='index_curr'){
                     let temp='';
                     currentObj.access.map((indObj,ind)=>{
@@ -68,8 +70,14 @@ const analyseData=(_object)=>{
                     let matchedInd=rawDataObj.indexOf(currentObj.access[0]);
                     if(matchedInd!==-1){
                         alreadyUsedInd.push(matchedInd);
-                        alreadyUsedInd.push(matchedInd+1);
-                        currentObj.val=rawDataObj[matchedInd+1].trim();
+                        if(rawDataObj[matchedInd+1].trim()===nextObj.access[0].trim()){
+                            currentObj.val="0";
+                        }
+                        else{
+                            currentObj.val=rawDataObj[matchedInd+1].trim();
+                            alreadyUsedInd.push(matchedInd+1);
+                        }
+                        
                     }   
                 }
                 else if(currentObj.type==='split'){
@@ -95,14 +103,18 @@ const analyseData=(_object)=>{
     return analysedData;
 }
 const fileReader=(cb)=>{
+    i=0;
+    _finSet=[];
     rawData((_object)=>{        
         let obj=analyseData(_object);
-        fs.writeFile("./des/analysedData.json",JSON.stringify(obj),(err)=>{
+        console.log('DONE');
+        cb(obj);
+       /*  fs.writeFile("./des/analysedData.json",JSON.stringify(obj),(err)=>{
             if(!err){
                 console.log('DONE');
                 cb(obj);
             }
-        })
+        }) */
         
     });
 }

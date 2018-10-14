@@ -5,11 +5,14 @@ let selectedCompany='altimetrik';
 let output= require('./organization/'+selectedCompany+'.js');
 
 
+const execute=(cb)=>{
+    output.fileReader((obj)=>{
+       cb(obj);
+     });
+};
 
+module.exports={execute};
 
-output.fileReader((obj)=>{
-    opn('index.html');
-});
 
 
 // opens the url in the default browser 

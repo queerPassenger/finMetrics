@@ -1,4 +1,5 @@
 import React from 'react';
+import Payslip from './payslip.jsx';
 
 class Content extends React.Component{
     constructor(props){
@@ -34,22 +35,12 @@ class Content extends React.Component{
         _obj[key]=this.refs[refName].value;
         this.renderComponent();
     }
+    
     renderPage(){
         if(this.page==='payslip'){
             return(
                 <div className="sub-content-wrapper">
-                    <div className="sub-content-header">
-                        PAYSLIP
-                    </div>
-                    <div className="payslip-action">
-                        <div className="folderName">
-                            <div className="placeholder_input">
-                                Location of the payslips
-                            </div>
-                            <input type="text" className={"location_input "+(this.payslip.file.locationPlaceHolder?"placeHolder":"header")} placeholder="" value={this.payslip.file.location} ref="payslip_location" onFocus={this.focusInput.bind(this,this.payslip.file,'locationPlaceHolder')} onChange={this.handlePaySlip.bind(this,this.payslip.file,'location','payslip_location')} />
-                            
-                        </div>
-                    </div>
+                    <Payslip />
                 </div>
             )
         }
