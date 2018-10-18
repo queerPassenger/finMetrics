@@ -2,7 +2,7 @@
 let pdfreader = require('pdfreader');
 let boilerPlate=require('../boilerplate.js');
 let fs = require('fs');
-let monthArray=['January','February','March','April','May','June','July','August','September','October','November','December'];
+let monthArray=['April','May','June','July','August','September','October','November','December','January','February','March'];
 let fileList=[];
 let inputFilePath='';
 let outputFilePath='./des/';
@@ -69,8 +69,10 @@ const analyseData=(_object)=>{
                 }
                 else if(currentObj.type==='index_next'){
                     let matchedInd=rawDataObj.indexOf(currentObj.access[0]);
+                   
                     if(matchedInd!==-1){
                         alreadyUsedInd.push(matchedInd);
+                        
                         if(rawDataObj[matchedInd+1].trim()===nextObj.access[0].trim()){
                             currentObj.val="0";
                         }
@@ -92,7 +94,20 @@ const analyseData=(_object)=>{
                             break;
                         }
                     }                    
+                }                
+                else if(currentObj.type==='complex'){
+                    let matchedInd=-1;
+                    rawDataObj.map((a,aInd) =>{if((a+rawDataObj[aInd+1]).indexOf(currentObj.access[0])!==-1){matchedInd=aInd}});
+                    if(matchedInd==-1){
+                        currentObj.val="0";
+                    }
+                    else{
+                        let combinedStr=rawDataObj[matchedInd]+''+rawDataObj[matchedInd+1];
+                        currentObj.val=combinedStr.split(currentObj.access[0])[1].trim().split(' ')[0];
+                    }
+                    
                 }
+
                 if(currentObj.numConvert){
                     currentObj.val=Number(currentObj.val.replace(',',''));
                 }
@@ -115,26 +130,26 @@ const fileReader=(finYear,cb)=>{
 
 
     for(let k=0;k<monthArray.length;k++){
-        let fileName=monthArray[k]+'-'+(k>=3?_year1:_year2);
+        let fileName=monthArray[k]+'-'+(k>=9?_year2:_year1);
         if (!(fs.existsSync(inputFilePath+fileName+inputFileExt))){
             // Do something
-            console.log('File Not Found ', inputFilePath+fileList[i]+inputFileExt);  
+            console.log('File Not Found ', inputFilePath+fileName+inputFileExt);  
         }
         else{      
-            fileList.push(monthArray[k]+'-'+(k>=3?_year1:_year2));
+            fileList.push(fileName);
         }        
     }
 
     rawData((_object)=>{        
         let obj=analyseData(_object);
-        console.log('DONE');
-        cb(obj);
-       /*  fs.writeFile("./des/analysedData.json",JSON.stringify(obj),(err)=>{
+        /* fs.writeFile("./des/analysedData.json",JSON.stringify(_object),(err)=>{
             if(!err){
                 console.log('DONE');
-                cb(obj);
+                
             }
         }) */
+        cb(obj);
+       
         
     });
 }

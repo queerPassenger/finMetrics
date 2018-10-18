@@ -146,12 +146,13 @@ button{
 
 .grid-wrapper{
     float: left;
-    margin-top: 20px;
+    margin-top: 56px;
     margin-bottom: 20px;
-    width: 1500px;
+    width: 1209px;
     overflow: auto;
     white-space: nowrap;
-    box-shadow: 1px 2px 3px grey;
+    box-shadow: 5px 4px 6px grey;
+    margin-left: 2%;
 }
 .row{
     width:100%;
@@ -159,7 +160,7 @@ button{
 }
 .cell{
     width: 300px;
-    font-family: monospace;
+    font-family: Mali;
     font-size: 16px;
     display: inline-block;
     height: 30px;
@@ -167,8 +168,8 @@ button{
     padding-top: 5px;
     padding-bottom: 5px;
     /* box-shadow: 2px 3px 3px grey; */
-    border: 1px dotted gray;
-    border-radius: 6px;
+    border: 1px solid #ece4e4;
+    /* border-radius: 6px; */
 }
 .sub{
     padding-left:10px;
@@ -215,4 +216,53 @@ button{
     width:300px;
     display:inline-block;
     outline:1px solid green;
+}
+.payslip-header-label{
+    font-family: Mali;
+    font-size: 20px;
+    font-weight:bold;
+    text-align: center;
+}
+.left-panel-wrapper{
+    width: 20%;
+    float:left;
+    height: 100%;
+    box-shadow: -1px 1px 4px grey;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    border-top: 0px;
+}
+.left-panel-header{
+    font-family:Mali;
+    font-size:20px;
+    text-align:center;
+    font-weight: bold;
+}
+.leftPanel-list-items{
+    width:100%;
+    float:left;
+    padding-left: 9%;
+}
+.leftPanel-list{
+    width:80%;
+    float:left;
+    margin-top:50px;
+    background: #969696;
+}
+.leftPanel-list-active{
+    width:80%;
+    float:left;
+    margin-top:50px;
+    background:#524692;
+}
+.right-panel-wrapper{
+    width: 80%;
+    float:left;
+    padding-top: 42px;
+}
+.loading-wrapper{
+    margin-top: 200px;
+    margin-left: 41%;
+    font-family: Mali;
+    font-weight: bold;
 }
