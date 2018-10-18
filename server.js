@@ -22,7 +22,7 @@ app.get('/',(req,res)=>{
 });
 
 app.get('/analyse',(req,res)=>{    
-    execute((obj)=>{
+    execute(req.query.finYear,(obj)=>{
       res.send(obj);
     })    
  });

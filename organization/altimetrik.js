@@ -2,8 +2,9 @@
 let pdfreader = require('pdfreader');
 let boilerPlate=require('../boilerplate.js');
 let fs = require('fs');
-let fileList=['December-2017.PDF','January-2018.PDF','February-2018.PDF','March-2018.PDF','April-2018.PDF','May-2018.PDF','June-2018.PDF','July-2018.PDF','August-2018.PDF','September-2018.PDF'];
-let inputFilePath='C:/src/';
+let monthArray=['January','February','March','April','May','June','July','August','September','October','November','December'];
+let fileList=[];
+let inputFilePath='';
 let outputFilePath='./des/';
 let inputFileExt='.pdf';
 let outputFileExt='.txt';
@@ -102,9 +103,28 @@ const analyseData=(_object)=>{
     }
     return analysedData;
 }
-const fileReader=(cb)=>{
+const fileReader=(finYear,cb)=>{
     i=0;
     _finSet=[];
+    fileList=[];
+    inputFilePath='C:/src/payslips/';
+    inputFilePath+='fin'+finYear+'/';
+    let _year1=finYear.split('-')[0];
+    let _year2=finYear.split('-')[1];
+    
+
+
+    for(let k=0;k<monthArray.length;k++){
+        let fileName=monthArray[k]+'-'+(k>=3?_year1:_year2);
+        if (!(fs.existsSync(inputFilePath+fileName+inputFileExt))){
+            // Do something
+            console.log('File Not Found ', inputFilePath+fileList[i]+inputFileExt);  
+        }
+        else{      
+            fileList.push(monthArray[k]+'-'+(k>=3?_year1:_year2));
+        }        
+    }
+
     rawData((_object)=>{        
         let obj=analyseData(_object);
         console.log('DONE');

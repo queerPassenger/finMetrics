@@ -14,6 +14,8 @@ export default class Payslip extends React.Component{
     handleAnalyse(){
         let xhttp = new XMLHttpRequest();
         let _this=this;
+        let finYear="2018-2019";
+
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
                 
@@ -25,7 +27,7 @@ export default class Payslip extends React.Component{
                 });
             }
         };
-        xhttp.open("GET", "/analyse", true);
+        xhttp.open("GET", "/analyse?finYear="+finYear, true);
         xhttp.send();
     }
     getGridData(_data){
@@ -40,10 +42,11 @@ export default class Payslip extends React.Component{
         let lta={type:'Earnings',data:['Leave Travel Allowance']};
         let deductions={type:'',data:['Deductions'],expand:true};
         let pf={type:'Deductions',data:['Provident Fund']}
-        let pt={type:'Deductions',data:['Provisional Tax']}
+        let pt={type:'Deductions',data:['Professional Tax']}
         let it={type:'Deductions',data:['Income Tax']}
         let medInsPrem={type:'Deductions',data:['Medical Insurance Premium']};
         let netTotal={type:'',data:['Net Pay']};
+        let others={type:'',data:['Others']};
 
         _data.map(dataObj=>{
             console.log("data inside map",dataObj);
@@ -127,7 +130,7 @@ export default class Payslip extends React.Component{
                                             return(
                                                 <div className={(ind===0 || subInd===0?ind==0?"cell vheader":"cell rheader":"cell")+(data.type===''?" bold":"")} >
                                                     <span className={("label")+(data.type!=='' && subInd===0?" subH":" ")}>
-                                                        {subData}
+                                                        {subData?subData:0}
                                                     </span>
                                                     {data.hasOwnProperty('expand') && subInd===0?
                                                         <span className="expand" onClick={this.handleExp.bind(this,data,'expand',subData)}>

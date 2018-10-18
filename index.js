@@ -5,8 +5,8 @@ let selectedCompany='altimetrik';
 let output= require('./organization/'+selectedCompany+'.js');
 
 
-const execute=(cb)=>{
-    output.fileReader((obj)=>{
+const execute=(finYear,cb)=>{
+    output.fileReader(finYear,(obj)=>{
        cb(obj);
      });
 };
