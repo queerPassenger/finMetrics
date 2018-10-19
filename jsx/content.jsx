@@ -1,6 +1,6 @@
 import React from 'react';
 import Payslip from './payslip.jsx';
-
+import Bank from './bank.jsx';
 class Content extends React.Component{
     constructor(props){
         super(props);
@@ -41,6 +41,13 @@ class Content extends React.Component{
             return(
                 <div className="sub-content-wrapper">
                     <Payslip />
+                </div>
+            )
+        }
+        else if(this.page==='bank'){
+            return(
+                <div className="sub-content-wrapper">
+                    <Bank />
                 </div>
             )
         }

@@ -115,10 +115,6 @@ button{
     text-align: center;
     color: #62509e;
 }
-.payslip-action{
-    padding-top: 30px;
-    text-align: center;
-}
 .location_input{
     border: 0px;
     border-bottom: 2px solid #684dc7;
@@ -151,8 +147,18 @@ button{
     white-space: nowrap;
     box-shadow: 5px 4px 6px grey;
     margin-left: 2%;
+    height: 500px;
 }
 .row{
+    width:100%;
+    float:left;
+}
+.header_row{
+    width:100%;
+    float:left;
+    font-weight: bold;
+}
+.normal_row{
     width:100%;
     float:left;
 }
@@ -161,13 +167,48 @@ button{
     font-family: Mali;
     font-size: 16px;
     display: inline-block;
-    height: 30px;
+    height: 40px;
     text-align: center;
     padding-top: 5px;
     padding-bottom: 5px;
     /* box-shadow: 2px 3px 3px grey; */
     border: 1px solid #ece4e4;
     /* border-radius: 6px; */
+    /* word-break: break-word; */
+    /* white-space: normal; */
+    overflow-x: auto;
+}
+.larger_cell{
+    width: 400px;
+    font-family: Mali;
+    font-size: 16px;
+    display: inline-block;
+    height: 40px;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /* box-shadow: 2px 3px 3px grey; */
+    border: 1px solid #ece4e4;
+    /* border-radius: 6px; */
+    /* word-break: break-word; */
+    /* white-space: normal; */
+    overflow-x: auto;
+}
+.smaller_cell{
+    width: 150px;
+    font-family: Mali;
+    font-size: 16px;
+    display: inline-block;
+    height: 40px;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /* box-shadow: 2px 3px 3px grey; */
+    border: 1px solid #ece4e4;
+    /* border-radius: 6px; */
+    /* word-break: break-word; */
+    /* white-space: normal; */
+    overflow-x: auto;
 }
 .sub{
     padding-left:10px;
@@ -216,7 +257,7 @@ button{
     display:inline-block;
     outline:1px solid green;
 }
-.payslip-header-label{
+.payslip-header-label,.bank-header-label{
     font-family: Mali;
     font-size: 20px;
     font-weight:bold;
