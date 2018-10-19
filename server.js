@@ -21,8 +21,13 @@ app.get('/',(req,res)=>{
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/analyse',(req,res)=>{    
-    execute(req.query.finYear,(obj)=>{
+app.get('/payslip/analyse',(req,res)=>{    
+    execute(req.query.finYear,'payslip',(obj)=>{
       res.send(obj);
     })    
  });
+ app.get('/bankstatement/analyse',(req,res)=>{    
+  execute(req.query.finYear,'bankstatement',(obj)=>{
+    res.send(obj);
+  })    
+});

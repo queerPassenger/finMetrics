@@ -35,7 +35,7 @@ export default class Payslip extends React.Component{
                 });
             }
         };
-        xhttp.open("GET", "/analyse?finYear="+this.finYears[this.finYearSel], true);
+        xhttp.open("GET", "/payslip/analyse?finYear="+this.finYears[this.finYearSel], true);
         xhttp.send();
     }
     getGridData(_data){

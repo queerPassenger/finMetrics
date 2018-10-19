@@ -1,23 +1,21 @@
 const fs=require('fs');
-const opn = require('opn');
-let companyList=['altimetrik'];
 let selectedCompany='altimetrik';
-let output= require('./organization/'+selectedCompany+'.js');
+let payslipOperation=require('./organization/'+selectedCompany+'.js');
+let selectedBank='icici';
+let bankOperation=require('./bank/'+selectedBank+'.js');
 
-
-const execute=(finYear,cb)=>{
-    output.fileReader(finYear,(obj)=>{
-       cb(obj);
-     });
+const execute=(finYear,type,cb)=>{
+    if(type==='bankstatement'){
+      bankOperation.fileReader(finYear,(obj)=>{
+        
+      })
+    }
+    else if(type==='payslip'){
+      payslipOperation.fileReader(finYear,(obj)=>{
+        cb(obj);
+      });
+    }
 };
 
 module.exports={execute};
-
-
-
-// opens the url in the default browser 
-
-
-// specify the app to open in 
-/* opn('http://sindresorhus.com', {app: 'firefox'}); */
 

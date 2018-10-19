@@ -1,9 +1,9 @@
 import React from 'react';
 import {render} from 'react-dom';
 import PaySlip from './payslip.jsx';
-import Sample from './sample.jsx';
+import Main from './main.jsx';
 
 render(
-  <PaySlip />,
+  <Main />,
    document.getElementById('app')
 );

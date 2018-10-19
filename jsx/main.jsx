@@ -28,12 +28,7 @@ class Main extends React.Component{
         return(
             <div className="finMetrics_wrapper">
                 <StartUp />
-                {/* <div className="finMetrics_background"
-                <div className="finMetricsNormal">
-                    <div className="start_action">
-                        <button onClick={this.start.bind(this)}>Start</button>
-                    </div>
-                </div>              */}   
+              
             </div>
         )
     }
