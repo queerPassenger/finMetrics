@@ -1,4 +1,5 @@
 import React from 'react';
+var HighCharts=require('highcharts');
 
 export default class Payslip extends React.Component{
     constructor(props){
@@ -7,6 +8,7 @@ export default class Payslip extends React.Component{
             _:''
         };
         this.expandClick="";
+        this.cumexpandClick="";
         this._data=[];
         this.finYears=['2017-2018','2018-2019'];
         this.finYearSel=0;
@@ -28,10 +30,13 @@ export default class Payslip extends React.Component{
             if (this.readyState == 4 && this.status == 200) {                
                 _this._data=_this.getGridData(JSON.parse(xhttp.responseText));
                 console.log('_data',_this._data);
+                
                 _this.analyseFlag=true;
                 _this.loading=false;
                 _this.setState({
                     _:''
+                },()=>{
+                    _this.buildCharts();
                 });
             }
         };
@@ -41,73 +46,220 @@ export default class Payslip extends React.Component{
     getGridData(_data){
         console.log('_data insideGetGRidData',typeof _data);
         this.expandClick="";
+        this.cumexpandClick="";
         let gridData=[];
-        let firstRow={type:'',data:['Salary Components / Pay Period']};
-        let earnings={type:'',data:['Earnings'],expand:true};
-        let basic={type:'Earnings',data:['Basic Pay']};
-        let hra={type:'Earnings',data:['House Rent Allowance']};
-        let fbp={type:'Earnings',data:['Flexible Benefit Plan']};
-        let conveyance={type:'Earnings',data:['Conveyance Allowance']};
-        let lta={type:'Earnings',data:['Leave Travel Allowance']};
-        let deductions={type:'',data:['Deductions'],expand:true};
-        let pf={type:'Deductions',data:['Provident Fund']};
-        let pt={type:'Deductions',data:['Professional Tax']};
-        let it={type:'Deductions',data:['Income Tax']};
-        let medInsPrem={type:'Deductions',data:['Medical Insurance Premium']};
+        let firstRow={type:'',cumtype:'',data:['Salary Components / Pay Period'],cumulativeData:['Cumulative Salary / Pay Period',_data.length+' months']};
+        let earnings={type:'',cumtype:'',data:['Earnings'],expand:false,cumulativeData:['Earnings',0],cumexpand:false};
+        let basic={type:'Earnings',cumtype:'cumEarnings',data:['Basic Pay'],cumulativeData:['Basic Pay',0],};
+        let hra={type:'Earnings',cumtype:'cumEarnings',data:['House Rent Allowance'],cumulativeData:['House Rent Allowance',0],};
+        let fbp={type:'Earnings',cumtype:'cumEarnings',data:['Flexible Benefit Plan'],cumulativeData:['Flexible Benefit Plan',0],};
+        let conveyance={type:'Earnings',cumtype:'cumEarnings',data:['Conveyance Allowance'],cumulativeData:['Conveyance Allowance',0],};
+        let lta={type:'Earnings',cumtype:'cumEarnings',data:['Leave Travel Allowance'],cumulativeData:['Leave Travel Allowance',0],};
+        let deductions={type:'',cumtype:'',data:['Deductions'],expand:false,cumulativeData:['Deductions',0],cumexpand:false};
+        let pf={type:'Deductions',cumtype:'cumDeductions',data:['Provident Fund'],cumulativeData:['Provident Fund',0],};
+        let pt={type:'Deductions',cumtype:'cumDeductions',data:['Professional Tax'],cumulativeData:['Professional Tax',0],};
+        let it={type:'Deductions',cumtype:'cumDeductions',data:['Income Tax'],cumulativeData:['Income Tax',0],};
+        let medInsPrem={type:'Deductions',cumtype:'cumDeductions',data:['Medical Insurance Premium'],cumulativeData:['Medical Insurance Premium',0],};
 
-        let others={type:'',data:['Others'],expand:true};
-        let fc={type:'Others',data:['Food Coupons']};
-        let fcArrears={type:'Others',data:['Food Coupons arrear']};
-        let medicalReimbursement={type:'Others',data:['Medical Reimbursements']};
-        let medicalArrears={type:'Others',data:['Medical Arrears']};
-        let fuelAllowance={type:'Others',data:['Fuel Allowance']};
-        let fuelArrears={type:'Others',data:['Fuel Arrears']};
-        let carLeaseRental={type:'Others',data:['Car Lease Rental']};
-        let carLeaseArrears={type:'Others',data:['Car Lease Arrears']};
-        let nps={type:'Others',data:['Contribution to NPS']};
-        let giftAwards={type:'Others',data:['Gifts and Awards']};
+        let others={type:'',cumtype:'',data:['Others'],expand:false,cumulativeData:['Others',0],cumexpand:false};
+        let fc={type:'Others',cumtype:'cumOthers',data:['Food Coupons'],cumulativeData:['Food Coupons',0]};
+        let fcArrears={type:'Others',cumtype:'cumOthers',data:['Food Coupons arrear'],cumulativeData:['Food Coupons arrear',0]};
+        let medicalReimbursement={type:'Others',cumtype:'cumOthers',data:['Medical Reimbursements'],cumulativeData:['Medical Reimbursements',0]};
+        let medicalArrears={type:'Others',cumtype:'cumOthers',data:['Medical Arrears'],cumulativeData:['Medical Arrears',0]};
+        let fuelAllowance={type:'Others',cumtype:'cumOthers',data:['Fuel Allowance'],cumulativeData:['Fuel Allowance',0]};
+        let fuelArrears={type:'Others',cumtype:'cumOthers',data:['Fuel Arrears'],cumulativeData:['Fuel Arrears',0]};
+        let carLeaseRental={type:'Others',cumtype:'cumOthers',data:['Car Lease Rental'],cumulativeData:['Car Lease Rental',0]};
+        let carLeaseArrears={type:'Others',cumtype:'cumOthers',data:['Car Lease Arrears'],cumulativeData:['Car Lease Arrears',0]};
+        let nps={type:'Others',cumtype:'cumOthers',data:['Contribution to NPS'],cumulativeData:['Contribution to NPS',0]};
+        let giftAwards={type:'Others',cumtype:'cumOthers',data:['Gifts and Awards'],cumulativeData:['Gifts and Awards',0]};
 
-        let netTotal={type:'',data:['** Net Pay(Earnings-Deductions)']};
-        let total={type:'',data:['** Total(Earnings-Deductions+Others)']};
+        let netTotal={type:'',cumtype:'',data:['** Net Pay(Earnings-Deductions)'],cumulativeData:['** Net Pay(Earnings-Deductions)',0]};
+        let total={type:'',cumtype:'',data:['** Total(Earnings-Deductions+Others)'],cumulativeData:['** Total(Earnings-Deductions+Others)',0]};
+        
+
+        let chartData={
+            xAxis:[],
+            earnings:[
+                {
+                    name:'Basic Pay',
+                    data:[],
+                },
+                {
+                    name:'House Rent Allowance',
+                    data:[],
+                },
+                {
+                    name:'Flexible Benefit Plan',
+                    data:[],
+                },
+                {
+                    name:'Conveyance Allowance',
+                    data:[],
+                },
+                {
+                    name:'Leave Travel Allowance',
+                    data:[],
+                },
+                {
+                    name:'Total Earnings',
+                    data:[],
+                }
+            ],
+            deductions:[
+                {
+                    name:'Provident Fund',
+                    data:[],
+                },
+                {
+                    name:'Professional Tax',
+                    data:[],
+                },
+                {
+                    name:'Income Tax',
+                    data:[],
+                },
+                {
+                    name:'Medical Insurance Premium',
+                    data:[],
+                },
+               
+            ],
+            others:[
+                {
+                    name:'Food Coupons',
+                    data:[],
+                },
+                {
+                    name:'Food Coupons arrear',
+                    data:[],
+                },
+                {
+                    name:'Medical Reimbursements',
+                    data:[],
+                },
+                {
+                    name:'Medical Arrears',
+                    data:[],
+                },
+                {
+                    name:'Fuel Allowance',
+                    data:[],
+                },
+                {
+                    name:'Fuel Arrears',
+                    data:[],
+                },
+                {
+                    name:'Car Lease Rental',
+                    data:[],
+                },
+                {
+                    name:'Car Lease Arrears',
+                    data:[],
+                },
+                {
+                    name:'Contribution to NPS',
+                    data:[],
+                },
+                {
+                    name:'Gifts and Awards',
+                    data:[],
+                }
+            ],
+        }
+
+
 
         _data.map(dataObj=>{
             console.log("data inside map",dataObj);
             let earningsSum=0;
             let deductionsSum=0;
             let othersSum=0;
-
+            /*Earnings*/
             firstRow.data.push(dataObj.data.employee.payPeriod.val);
             
             basic.data.push(dataObj.data.earnings.basic.val);
+            basic.cumulativeData[1]+=dataObj.data.earnings.basic.val;
+            chartData.earnings[0].data.push(dataObj.data.earnings.basic.val);
+
             hra.data.push(dataObj.data.earnings.hra.val);
+            hra.cumulativeData[1]+=dataObj.data.earnings.hra.val;
+            chartData.earnings[1].data.push(dataObj.data.earnings.hra.val);
+
             fbp.data.push(dataObj.data.earnings.fbp.val);
+            fbp.cumulativeData[1]+=dataObj.data.earnings.fbp.val;
+            chartData.earnings[2].data.push(dataObj.data.earnings.fbp.val);
+
             lta.data.push(dataObj.data.earnings.lta.val);
+            lta.cumulativeData[1]+=dataObj.data.earnings.lta.val;
+            chartData.earnings[3].data.push(dataObj.data.earnings.lta.val);
+
             conveyance.data.push(dataObj.data.earnings.conveyance.val||0);
+            conveyance.cumulativeData[1]+=dataObj.data.earnings.conveyance.val;     
+            chartData.earnings[4].data.push(dataObj.data.earnings.conveyance.val);
+
             earningsSum=dataObj.data.earnings.basic.val+dataObj.data.earnings.hra.val+dataObj.data.earnings.fbp.val+dataObj.data.earnings.lta.val+(dataObj.data.earnings.conveyance.val||0);
             earnings.data.push(earningsSum)
+            earnings.cumulativeData[1]+=earningsSum;
+            chartData.earnings[5].data.push(earningsSum);
 
+            /*Deductions*/
             pf.data.push(dataObj.data.deductions.pf.val);
+            pf.cumulativeData[1]+=dataObj.data.deductions.pf.val;
+
             pt.data.push(dataObj.data.deductions.pt.val);
+            pt.cumulativeData[1]+=dataObj.data.deductions.pt.val;
+
             it.data.push(dataObj.data.deductions.it.val);
+            it.cumulativeData[1]+=dataObj.data.deductions.it.val;
+
             medInsPrem.data.push(dataObj.data.deductions.medInsPrem.val);
+            medInsPrem.cumulativeData[1]+=dataObj.data.deductions.medInsPrem.val;
+
             deductionsSum=dataObj.data.deductions.pf.val+dataObj.data.deductions.pt.val+dataObj.data.deductions.it.val+dataObj.data.deductions.medInsPrem.val;
             deductions.data.push(deductionsSum);
+            deductions.cumulativeData[1]+=deductionsSum;
             
+            /*Others*/
             fc.data.push(dataObj.data.others.fc.val);
+            fc.cumulativeData[1]+=dataObj.data.others.fc.val;
+            
             fcArrears.data.push(dataObj.data.others.fcArrears.val);
+            fcArrears.cumulativeData[1]+=dataObj.data.others.fcArrears.val;
+
             medicalReimbursement.data.push(dataObj.data.others.medicalReimbursement.val);
+            medicalReimbursement.cumulativeData[1]+=dataObj.data.others.medicalReimbursement.val;
+
             medicalArrears.data.push(dataObj.data.others.medicalArrears.val);
+            medicalArrears.cumulativeData[1]+=dataObj.data.others.medicalArrears.val;
+
             fuelAllowance.data.push(dataObj.data.others.fuelAllowance.val);
+            fuelAllowance.cumulativeData[1]+=dataObj.data.others.fuelAllowance.val;
+
             fuelArrears.data.push(dataObj.data.others.fuelArrears.val);
+            fuelArrears.cumulativeData[1]+=dataObj.data.others.fuelArrears.val;
+
             carLeaseRental.data.push(dataObj.data.others.carLeaseRental.val);
+            carLeaseRental.cumulativeData[1]+=dataObj.data.others.carLeaseRental.val;
+
             carLeaseArrears.data.push(dataObj.data.others.carLeaseArrears.val);
+            carLeaseArrears.cumulativeData[1]+=dataObj.data.others.carLeaseArrears.val;
+
             nps.data.push(dataObj.data.others.nps.val);
+            nps.cumulativeData[1]+=dataObj.data.others.nps.val;
+
             giftAwards.data.push(dataObj.data.others.giftAwards.val);
+            giftAwards.cumulativeData[1]+=dataObj.data.others.giftAwards.val;
+
             othersSum=(dataObj.data.others.fc.val+dataObj.data.others.fcArrears.val+dataObj.data.others.medicalReimbursement.val+dataObj.data.others.medicalArrears.val+dataObj.data.others.fuelAllowance.val+dataObj.data.others.fuelArrears.val+dataObj.data.others.carLeaseRental.val+dataObj.data.others.carLeaseArrears.val+dataObj.data.others.nps.val+dataObj.data.others.giftAwards.val);
             others.data.push(othersSum);
+            others.cumulativeData[1]+=othersSum;
 
             netTotal.data.push(earningsSum-deductionsSum);
-            total.data.push(earningsSum-deductionsSum+othersSum)
+            netTotal.cumulativeData[1]+=earningsSum-deductionsSum;
+
+            total.data.push(earningsSum-deductionsSum+othersSum);
+            total.cumulativeData[1]+=earningsSum-deductionsSum+othersSum;
         });
 
         gridData.push(firstRow);
@@ -140,9 +292,43 @@ export default class Payslip extends React.Component{
 
         
     }
-    handleExp(_obj,_key,dataName){
+    buildCharts(){
+        HighCharts.chart('earnings',{
+            chart:{
+                type:'line'
+            },
+            title:{
+                text:'Earnings'
+            },
+            credits:{
+                enabled:false,
+            },
+            legend:{
+                enabled:false,
+            },
+            xAxis:{
+                categories:['2012','2013'],
+                title:{
+                    text:'Pay Period'
+                }
+            },
+            series:[{
+                name:'BASIC PAY',
+                data:[12,34,56]
+            },
+            {
+                name:'BASIC PAY2',
+                data:[120,3467,1256]
+            },
+            {
+                name:'BASIC PAY1',
+                data:[1,2,3]
+            }]
+        })
+    }
+    handleExp(_obj,_key,dataName,expandClk){
         _obj[_key]=!_obj[_key];
-        this.expandClick=dataName;
+        this[expandClk]=dataName;
         this.setState({
             _:'',
         })
@@ -169,6 +355,20 @@ export default class Payslip extends React.Component{
             }
             this.expandClick='';
         }
+        if(this.cumexpandClick){
+            console.log('NEW',document.getElementsByClassName(this.cumexpandClick));
+            var testarray = document.getElementsByClassName(this.cumexpandClick);
+            for(var i = 0; i < testarray.length; i++)
+            {
+                if(testarray[i].className.indexOf('hide')!==-1){
+                    testarray[i].className=testarray[i].className.replace('hide','');
+                }
+                else{
+                    testarray[i].className += " hide";
+                }
+            }
+            this.cumexpandClick='';
+        }
     }
     
     render(){
@@ -194,32 +394,66 @@ export default class Payslip extends React.Component{
                                 Loading...
                             </div>
                         :
-                            <div className="grid-super-wrapper">
-                                <div className="grid-wrapper" >
-                                    {this._data.map((data,ind)=>{
-                                        return(
-                                            <div className={("row ")+data.type}>
-                                                {data.data.map((subData,subInd)=>{                                        
-                                                    return(
-                                                        <div className={(ind===0 || subInd===0?ind==0?"cell vheader":"cell rheader":"cell")+(data.type===''?" bold":"")} >
-                                                            <span className={("label")+(data.type!=='' && subInd===0?" subH":" ")}>
-                                                                {subData?subData:0}
-                                                            </span>
-                                                            {data.hasOwnProperty('expand') && subInd===0?
-                                                                <span className="expand" onClick={this.handleExp.bind(this,data,'expand',subData)}>
-                                                                    {data.expand?"-":"+"}
+                            <div className="right-panel-content">
+                                <div className="grid-super-wrapper">
+                                    <div className="grid-wrapper" >
+                                        {this._data.map((data,ind)=>{
+                                            return(
+                                                <div className={("row ")+data.type+(data.type!==''?" hide":"")}>
+                                                    {data.data.map((subData,subInd)=>{                                        
+                                                        return(
+                                                            <div className={(ind===0 || subInd===0?ind==0?"cell vheader":"cell rheader":"cell")+(data.type===''?" bold":"")} >
+                                                                <span className={("label")+(data.type!=='' && subInd===0?" subH":" ")}>
+                                                                    {subData?subData:0}
                                                                 </span>
-                                                            :
-                                                                null
-                                                            }
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                        )
-                                    })}
+                                                                {data.hasOwnProperty('expand') && subInd===0?
+                                                                    <span className="expand" onClick={this.handleExp.bind(this,data,'expand',subData,'expandClick')}>
+                                                                        {data.expand?"-":"+"}
+                                                                    </span>
+                                                                :
+                                                                    null
+                                                                }
+                                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                    <div className="cumulative-grid-wrapper">
+                                        {this._data.map((data,ind)=>{
+                                            return(
+                                                <div className={("row ")+data.cumtype+(data.cumtype!==''?" hide":"")}>
+                                                    {data.cumulativeData.map((subData,subInd)=>{                                        
+                                                        return(
+                                                            <div className={(ind===0 || subInd===0?ind==0?"cell vheader":"cell rheader":"cell")+(data.type===''?" bold":"")} >
+                                                                <span className={("label")+(data.type!=='' && subInd===0?" subH":" ")}>
+                                                                    {subData?subData:0}
+                                                                </span>
+                                                                {data.hasOwnProperty('cumexpand') && subInd===0?
+                                                                    <span className="expand" onClick={this.handleExp.bind(this,data,'cumexpand','cum'+subData,'cumexpandClick')}>
+                                                                        {data.cumexpand?"-":"+"}
+                                                                    </span>
+                                                                :
+                                                                    null
+                                                                }
+                                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>  
+                                <div className="chart-super-wrapper">
+                                    <div className="chart-wrapper" id="earnings"> 
+                                    </div>
+                                    <div className="chart-wrapper" id="deductions"> 
+                                    </div>
+                                    <div className="chart-wrapper" id="others"> 
+                                    </div>
                                 </div>
-                            </div>   
+                            </div> 
                         }                 
                 </div>
                 

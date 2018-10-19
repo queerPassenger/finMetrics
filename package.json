@@ -24,8 +24,9 @@
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
-    "pdfreader": "^0.2.5",
+    "highcharts": "^6.2.0",
     "opn": "^5.4.0",
+    "pdfreader": "^0.2.5",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.0.0"

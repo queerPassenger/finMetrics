@@ -147,7 +147,8 @@ button{
     white-space: nowrap;
     box-shadow: 5px 4px 6px grey;
     margin-left: 2%;
-    height: 500px;
+    height: 324px;
+    box-shadow: 1px 1px 14px grey;
 }
 .row{
     width:100%;
@@ -267,7 +268,7 @@ button{
     width: 20%;
     float:left;
     height: 100%;
-    box-shadow: -1px 1px 4px grey;
+    box-shadow: 1px 1px 14px grey;
     padding-top: 100px;
     padding-bottom: 100px;
     border-top: 0px;
@@ -305,4 +306,14 @@ button{
     margin-left: 41%;
     font-family: Mali;
     font-weight: bold;
+}
+.cumulative-grid-wrapper{
+    margin-left: 25%;
+    margin-top: 50px;
+    float: left;
+    width: 605px;
+    box-shadow: 1px 1px 14px grey;
+    overflow: auto;
+    height: 312px;
+    white-space: nowrap;
 }
