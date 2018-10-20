@@ -317,3 +317,16 @@ button{
     height: 312px;
     white-space: nowrap;
 }
+.chart-super-wrapper{
+    margin-top: 50px;
+    float: left;
+    padding-left: 1%
+}
+.chart-wrapper{
+    display: inline-block;
+    float: left;
+    box-shadow: 1px 1px 18px grey;
+    margin-right: 1%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

@@ -7,6 +7,7 @@ export default class Payslip extends React.Component{
         this.state={
             _:''
         };
+        this.monthArr=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         this.expandClick="";
         this.cumexpandClick="";
         this._data=[];
@@ -28,7 +29,10 @@ export default class Payslip extends React.Component{
         });
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {                
-                _this._data=_this.getGridData(JSON.parse(xhttp.responseText));
+                
+                let customizedData=_this.customizeData(JSON.parse(xhttp.responseText));
+                _this._data=customizedData.gridData;
+
                 console.log('_data',_this._data);
                 
                 _this.analyseFlag=true;
@@ -36,15 +40,14 @@ export default class Payslip extends React.Component{
                 _this.setState({
                     _:''
                 },()=>{
-                    _this.buildCharts();
+                    _this.buildCharts(customizedData.chartData);
                 });
             }
         };
         xhttp.open("GET", "/payslip/analyse?finYear="+this.finYears[this.finYearSel], true);
         xhttp.send();
     }
-    getGridData(_data){
-        console.log('_data insideGetGRidData',typeof _data);
+    customizeData(_data){
         this.expandClick="";
         this.cumexpandClick="";
         let gridData=[];
@@ -122,6 +125,10 @@ export default class Payslip extends React.Component{
                     name:'Medical Insurance Premium',
                     data:[],
                 },
+                {
+                    name:'Total Deductions',
+                    data:[],
+                },
                
             ],
             others:[
@@ -164,7 +171,11 @@ export default class Payslip extends React.Component{
                 {
                     name:'Gifts and Awards',
                     data:[],
-                }
+                },
+                {
+                    name:'Total Others',
+                    data:[],
+                },
             ],
         }
 
@@ -177,7 +188,10 @@ export default class Payslip extends React.Component{
             let othersSum=0;
             /*Earnings*/
             firstRow.data.push(dataObj.data.employee.payPeriod.val);
-            
+            let temp=dataObj.data.employee.payPeriod.val.split('-')[1].split('.');
+
+            chartData.xAxis.push(this.monthArr[temp[1]-1]+temp[2]);
+
             basic.data.push(dataObj.data.earnings.basic.val);
             basic.cumulativeData[1]+=dataObj.data.earnings.basic.val;
             chartData.earnings[0].data.push(dataObj.data.earnings.basic.val);
@@ -206,54 +220,70 @@ export default class Payslip extends React.Component{
             /*Deductions*/
             pf.data.push(dataObj.data.deductions.pf.val);
             pf.cumulativeData[1]+=dataObj.data.deductions.pf.val;
+            chartData.deductions[0].data.push(dataObj.data.deductions.pf.val);
 
             pt.data.push(dataObj.data.deductions.pt.val);
             pt.cumulativeData[1]+=dataObj.data.deductions.pt.val;
+            chartData.deductions[1].data.push(dataObj.data.deductions.pt.val);
 
             it.data.push(dataObj.data.deductions.it.val);
             it.cumulativeData[1]+=dataObj.data.deductions.it.val;
+            chartData.deductions[2].data.push(dataObj.data.deductions.it.val);
 
             medInsPrem.data.push(dataObj.data.deductions.medInsPrem.val);
             medInsPrem.cumulativeData[1]+=dataObj.data.deductions.medInsPrem.val;
+            chartData.deductions[3].data.push(dataObj.data.deductions.medInsPrem.val);
 
             deductionsSum=dataObj.data.deductions.pf.val+dataObj.data.deductions.pt.val+dataObj.data.deductions.it.val+dataObj.data.deductions.medInsPrem.val;
             deductions.data.push(deductionsSum);
             deductions.cumulativeData[1]+=deductionsSum;
-            
+            chartData.deductions[4].data.push(deductionsSum);
+
             /*Others*/
             fc.data.push(dataObj.data.others.fc.val);
             fc.cumulativeData[1]+=dataObj.data.others.fc.val;
-            
+            chartData.others[0].data.push(dataObj.data.others.fc.val);
+
             fcArrears.data.push(dataObj.data.others.fcArrears.val);
             fcArrears.cumulativeData[1]+=dataObj.data.others.fcArrears.val;
+            chartData.others[1].data.push(dataObj.data.others.fcArrears.val);
 
             medicalReimbursement.data.push(dataObj.data.others.medicalReimbursement.val);
             medicalReimbursement.cumulativeData[1]+=dataObj.data.others.medicalReimbursement.val;
+            chartData.others[2].data.push(dataObj.data.others.medicalReimbursement.val);
 
             medicalArrears.data.push(dataObj.data.others.medicalArrears.val);
             medicalArrears.cumulativeData[1]+=dataObj.data.others.medicalArrears.val;
+            chartData.others[3].data.push(dataObj.data.others.medicalArrears.val);
 
             fuelAllowance.data.push(dataObj.data.others.fuelAllowance.val);
             fuelAllowance.cumulativeData[1]+=dataObj.data.others.fuelAllowance.val;
+            chartData.others[4].data.push(dataObj.data.others.fuelAllowance.val);
 
             fuelArrears.data.push(dataObj.data.others.fuelArrears.val);
             fuelArrears.cumulativeData[1]+=dataObj.data.others.fuelArrears.val;
+            chartData.others[5].data.push(dataObj.data.others.fuelArrears.val);
 
             carLeaseRental.data.push(dataObj.data.others.carLeaseRental.val);
             carLeaseRental.cumulativeData[1]+=dataObj.data.others.carLeaseRental.val;
+            chartData.others[6].data.push(dataObj.data.others.carLeaseRental.val);
 
             carLeaseArrears.data.push(dataObj.data.others.carLeaseArrears.val);
             carLeaseArrears.cumulativeData[1]+=dataObj.data.others.carLeaseArrears.val;
+            chartData.others[7].data.push(dataObj.data.others.carLeaseArrears.val);
 
             nps.data.push(dataObj.data.others.nps.val);
             nps.cumulativeData[1]+=dataObj.data.others.nps.val;
+            chartData.others[8].data.push(dataObj.data.others.nps.val);
 
             giftAwards.data.push(dataObj.data.others.giftAwards.val);
             giftAwards.cumulativeData[1]+=dataObj.data.others.giftAwards.val;
+            chartData.others[9].data.push(dataObj.data.others.giftAwards.val);
 
             othersSum=(dataObj.data.others.fc.val+dataObj.data.others.fcArrears.val+dataObj.data.others.medicalReimbursement.val+dataObj.data.others.medicalArrears.val+dataObj.data.others.fuelAllowance.val+dataObj.data.others.fuelArrears.val+dataObj.data.others.carLeaseRental.val+dataObj.data.others.carLeaseArrears.val+dataObj.data.others.nps.val+dataObj.data.others.giftAwards.val);
             others.data.push(othersSum);
             others.cumulativeData[1]+=othersSum;
+            chartData.others[10].data.push(othersSum);
 
             netTotal.data.push(earningsSum-deductionsSum);
             netTotal.cumulativeData[1]+=earningsSum-deductionsSum;
@@ -288,14 +318,18 @@ export default class Payslip extends React.Component{
         gridData.push(netTotal);
         gridData.push(total);
 
-        return gridData;
+        return {
+            gridData,
+            chartData
+        }
 
         
     }
-    buildCharts(){
+    buildCharts(chartData){
         HighCharts.chart('earnings',{
             chart:{
-                type:'line'
+                type:'line',
+                width:600,
             },
             title:{
                 text:'Earnings'
@@ -304,26 +338,59 @@ export default class Payslip extends React.Component{
                 enabled:false,
             },
             legend:{
-                enabled:false,
+                enabled:true,
             },
             xAxis:{
-                categories:['2012','2013'],
+                categories:chartData.xAxis,
                 title:{
                     text:'Pay Period'
                 }
             },
-            series:[{
-                name:'BASIC PAY',
-                data:[12,34,56]
+            series:chartData.earnings.slice(0,chartData.earnings.length-1)
+        });
+        HighCharts.chart('deductions',{
+            chart:{
+                type:'line',
+                width:600,
             },
-            {
-                name:'BASIC PAY2',
-                data:[120,3467,1256]
+            title:{
+                text:'Deductions'
             },
-            {
-                name:'BASIC PAY1',
-                data:[1,2,3]
-            }]
+            credits:{
+                enabled:false,
+            },
+            legend:{
+                enabled:true,
+            },
+            xAxis:{
+                categories:chartData.xAxis,
+                title:{
+                    text:'Pay Period'
+                }
+            },
+            series:chartData.deductions.slice(0,chartData.deductions.length-1)
+        });
+        HighCharts.chart('others',{
+            chart:{
+                type:'line',
+                width:600,
+            },
+            title:{
+                text:'Others'
+            },
+            credits:{
+                enabled:false,
+            },
+            legend:{
+                enabled:true,
+            },
+            xAxis:{
+                categories:chartData.xAxis,
+                title:{
+                    text:'Pay Period'
+                }
+            },
+            series:chartData.others.splice(0,chartData.others.length-1)
         })
     }
     handleExp(_obj,_key,dataName,expandClk){
