@@ -1,7 +1,33 @@
 const pdfreader=require('pdfreader');
 const fs=require('fs');
 
-
+function analyseData(_data){
+    let expenditure=[['S.No','Value Date','Transaction Date','Transaction Remarks','Withdrawal']];
+    let income=[['S.No','Value Date','Transaction Date','Transaction Remarks','Deposit']];
+    for(let i=1;i<_data.length;i++){
+        if(Number(_data[i][6])===0){
+            let newData=[..._data[i]];
+            newData.splice(6,2);
+            newData.splice(3,1);      
+            newData.splice(1,1,expenditure.length);
+            expenditure.push(newData);
+        }
+        if(Number(_data[i][5])===0){
+            let newData=[..._data[i]];
+            newData.splice(7,1);
+            newData.splice(5,1);
+            newData.splice(3,1);         
+            newData.splice(1,1,income.length);
+            income.push(newData);
+        }
+    }
+    let obj
+    return {
+        data:_data,
+        expenditure,
+        income
+    }
+}
 function fileReader(finYear,cb){
     let startFlag=false;
     let arr=[];
@@ -22,8 +48,7 @@ function fileReader(finYear,cb){
                 if(subArr.length===8){
                     arr.push(subArr);
                 }
-                cb(arr);
-                return;
+                cb(analyseData(arr));               
             }
             else{
                 if(startFlag){

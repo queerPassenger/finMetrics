@@ -23,7 +23,7 @@ export default class Bank extends React.Component{
             _:''
         });
         xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200) {                
+            if (this.readyState == 4 && this.status == 200) {   
                 _this._data=_this.getGridData(JSON.parse(xhttp.responseText));
                 console.log('_data',_this._data);
                 _this.analyseFlag=true;
@@ -72,12 +72,44 @@ export default class Bank extends React.Component{
                         :
                             <div className="grid-super-wrapper">
                                 <div className="grid-wrapper" >
-                                    {this._data.map((data,ind)=>{
+                                    {this._data.data.map((data,ind)=>{
                                         return(
                                             <div className={ind===0?"header_row":"normal_row"}>
                                             {data.map((subData,subDataInd)=>{
                                                 return(
                                                     <div className={(subDataInd===4?"larger_cell":"smaller_cell")}>
+                                                        {subData}
+                                                    </div>
+
+                                                )
+                                            })}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                <div className="expenditure-wrapper" >
+                                    {this._data.expenditure.map((data,ind)=>{
+                                        return(
+                                            <div className={ind===0?"header_row":"normal_row"}>
+                                            {data.map((subData,subDataInd)=>{
+                                                return(
+                                                    <div className={(subDataInd===3?"larger_cell":"smaller_cell")}>
+                                                        {subData}
+                                                    </div>
+
+                                                )
+                                            })}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                <div className="income-wrapper" >
+                                    {this._data.income.map((data,ind)=>{
+                                        return(
+                                            <div className={ind===0?"header_row":"normal_row"}>
+                                            {data.map((subData,subDataInd)=>{
+                                                return(
+                                                    <div className={(subDataInd===3?"larger_cell":"smaller_cell")}>
                                                         {subData}
                                                     </div>
 
