@@ -158,6 +158,10 @@ button{
     width:100%;
     float:left;
     font-weight: bold;
+    position: sticky;
+    top: 0px;
+    z-index: 9;
+    background: darkgrey;
 }
 .normal_row{
     width:100%;
@@ -333,6 +337,31 @@ button{
 .expenditure-wrapper,.income-wrapper{
     width: 1027px;
     margin-left: 10%;
+    float: left;
+    margin-top: 56px;
+    margin-bottom: 20px;
+    overflow: auto;
+    white-space: nowrap;
+    box-shadow: 5px 4px 6px grey;
+    height: 324px;
+    box-shadow: 1px 1px 14px grey;
+}
+.right-panel-content,.grid-super-wrapper{
+    float:left;
+    width:100%;
+}
+.grid-super-wrapper{
+    margin-bottom:20px;
+}
+.grid-label{
+    font-family:Mali;
+    font-size:18px;
+    text-align:center;
+    font-weight: bold
+}
+.monthly-wrapper{
+    width: 625px;
+    margin-left: 25%;
     float: left;
     margin-top: 56px;
     margin-bottom: 20px;

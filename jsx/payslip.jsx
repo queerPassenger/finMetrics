@@ -464,9 +464,10 @@ export default class Payslip extends React.Component{
                             <div className="right-panel-content">
                                 <div className="grid-super-wrapper">
                                     <div className="grid-wrapper" >
+                                        
                                         {this._data.map((data,ind)=>{
                                             return(
-                                                <div className={("row ")+data.type+(data.type!==''?" hide":"")}>
+                                                <div className={(ind===0?"header_row ":"normal_row ")+data.type+(data.type!==''?" hide":"")}>
                                                     {data.data.map((subData,subInd)=>{                                        
                                                         return(
                                                             <div className={(ind===0 || subInd===0?ind==0?"cell vheader":"cell rheader":"cell")+(data.type===''?" bold":"")} >

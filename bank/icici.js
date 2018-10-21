@@ -1,15 +1,24 @@
 const pdfreader=require('pdfreader');
 const fs=require('fs');
-
+const monthArr=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function analyseData(_data){
     let expenditure=[['S.No','Value Date','Transaction Date','Transaction Remarks','Withdrawal']];
     let income=[['S.No','Value Date','Transaction Date','Transaction Remarks','Deposit']];
+    let monthlyExpenses=[];
+    let monthlyIncome=[];
+    [...Array(12)].map(obj=>{
+        monthlyExpenses.push(0);
+        monthlyIncome.push(0);
+    })
+    let _currMonthExp=0;
+    let _currMonthInc=0;
     for(let i=1;i<_data.length;i++){
-        if(Number(_data[i][6])===0){
+
+        if(Number(_data[i][6])===0){            
             let newData=[..._data[i]];
             newData.splice(6,2);
             newData.splice(3,1);      
-            newData.splice(1,1,expenditure.length);
+            newData.splice(0,1,expenditure.length);
             expenditure.push(newData);
         }
         if(Number(_data[i][5])===0){
@@ -17,15 +26,41 @@ function analyseData(_data){
             newData.splice(7,1);
             newData.splice(5,1);
             newData.splice(3,1);         
-            newData.splice(1,1,income.length);
+            newData.splice(0,1,income.length);
             income.push(newData);
         }
+        if(Number(_data[i][2].split('/')[1])-1!==_currMonthExp){
+            _currMonthExp=Number(_data[i][2].split('/')[1])-1;
+            monthlyExpenses[_currMonthExp]+=Number(_data[i][5]);
+        }
+        else{
+            monthlyExpenses[_currMonthExp]+=Number(_data[i][5]);
+        }
+        if(Number(_data[i][2].split('/')[1])-1!==_currMonthInc){
+            _currMonthInc=Number(_data[i][2].split('/')[1])-1;
+            monthlyIncome[_currMonthInc]+=Number(_data[i][6]);
+        }
+        else{
+            monthlyIncome[_currMonthInc]+=Number(_data[i][6]);
+        }
+
     }
-    let obj
+    let monthlyExpInc=[['','Income','Expense','Savings']];
+    [...Array(12)].map((obj,ind)=>{
+        let newArr=[];
+        newArr.push(monthArr[ind]);
+        newArr.push(monthlyIncome[ind]);
+        newArr.push(monthlyExpenses[ind]);  
+        newArr.push(monthlyIncome[ind]-monthlyExpenses[ind]);  
+        monthlyExpInc.push(newArr);
+    })
+    let temp=monthlyExpInc.splice(1,3);
+    temp.map(x=>monthlyExpInc.push(x));
     return {
         data:_data,
         expenditure,
-        income
+        income,
+        monthlyExpInc
     }
 }
 function fileReader(finYear,cb){

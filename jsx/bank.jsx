@@ -70,56 +70,92 @@ export default class Bank extends React.Component{
                                 Loading...
                             </div>
                         :
-                            <div className="grid-super-wrapper">
-                                <div className="grid-wrapper" >
-                                    {this._data.data.map((data,ind)=>{
-                                        return(
-                                            <div className={ind===0?"header_row":"normal_row"}>
-                                            {data.map((subData,subDataInd)=>{
-                                                return(
-                                                    <div className={(subDataInd===4?"larger_cell":"smaller_cell")}>
-                                                        {subData}
-                                                    </div>
+                            <div className="right-panel-content">
+                                <div className="grid-super-wrapper">
+                                    <div className="grid-label">
+                                        Entire Statements
+                                    </div>
+                                    <div className="grid-wrapper" >                                       
+                                        {this._data.data.map((data,ind)=>{
+                                            return(
+                                                <div className={ind===0?"header_row":"normal_row"}>
+                                                {data.map((subData,subDataInd)=>{
+                                                    return(
+                                                        <div className={(subDataInd===4?"larger_cell":"smaller_cell")}>
+                                                            {subData}
+                                                        </div>
 
-                                                )
-                                            })}
-                                            </div>
-                                        )
-                                    })}
+                                                    )
+                                                })}
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
                                 </div>
-                                <div className="expenditure-wrapper" >
-                                    {this._data.expenditure.map((data,ind)=>{
-                                        return(
-                                            <div className={ind===0?"header_row":"normal_row"}>
-                                            {data.map((subData,subDataInd)=>{
-                                                return(
-                                                    <div className={(subDataInd===3?"larger_cell":"smaller_cell")}>
-                                                        {subData}
-                                                    </div>
+                                <div className="grid-super-wrapper">
+                                    <div className="grid-label">
+                                        Expenses
+                                    </div>
+                                    <div className="expenditure-wrapper" >
+                                        {this._data.expenditure.map((data,ind)=>{
+                                            return(
+                                                <div className={ind===0?"header_row":"normal_row"}>
+                                                {data.map((subData,subDataInd)=>{
+                                                    return(
+                                                        <div className={(subDataInd===3?"larger_cell":"smaller_cell")}>
+                                                            {subData}
+                                                        </div>
 
-                                                )
-                                            })}
-                                            </div>
-                                        )
-                                    })}
+                                                    )
+                                                })}
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
                                 </div>
-                                <div className="income-wrapper" >
-                                    {this._data.income.map((data,ind)=>{
-                                        return(
-                                            <div className={ind===0?"header_row":"normal_row"}>
-                                            {data.map((subData,subDataInd)=>{
-                                                return(
-                                                    <div className={(subDataInd===3?"larger_cell":"smaller_cell")}>
-                                                        {subData}
-                                                    </div>
+                                <div className="grid-super-wrapper">
+                                    <div className="grid-label">
+                                        Income
+                                    </div>
+                                    <div className="income-wrapper" >
+                                        {this._data.income.map((data,ind)=>{
+                                            return(
+                                                <div className={ind===0?"header_row":"normal_row"}>
+                                                {data.map((subData,subDataInd)=>{
+                                                    return(
+                                                        <div className={(subDataInd===3?"larger_cell":"smaller_cell")}>
+                                                            {subData}
+                                                        </div>
 
-                                                )
-                                            })}
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            </div>   
+                                                    )
+                                                })}
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div> 
+                                <div className="grid-super-wrapper">
+                                    <div className="grid-label">
+                                        Monthly Data
+                                    </div>
+                                    <div className="monthly-wrapper" >
+                                        {this._data.monthlyExpInc.map((data,ind)=>{
+                                            return(
+                                                <div className={ind===0?"header_row":"normal_row"}>
+                                                {data.map((subData,subDataInd)=>{
+                                                    return(
+                                                        <div className={("smaller_cell")}>
+                                                            {(subDataInd!==0 && ind!==0)?Number.parseFloat(subData).toFixed(2):subData}
+                                                        </div>
+
+                                                    )
+                                                })}
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div> 
+                            </div> 
                         }                 
                 </div>
                 
