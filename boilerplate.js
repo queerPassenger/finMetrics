@@ -182,6 +182,13 @@ let boilerPlate={
                 access:['LTA Amount'],
                 numConvert:true,
             },
+            shift:{
+                val:'',
+                label:'Shift Allowance',
+                type:'index_next',
+                access:['Shift Allowance'],
+                numConvert:true,
+            }
         },
         deductions:{
             pf:{

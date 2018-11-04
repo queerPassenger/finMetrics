@@ -56,6 +56,7 @@ export default class Payslip extends React.Component{
         let basic={type:'Earnings',cumtype:'cumEarnings',data:['Basic Pay'],cumulativeData:['Basic Pay',0],};
         let hra={type:'Earnings',cumtype:'cumEarnings',data:['House Rent Allowance'],cumulativeData:['House Rent Allowance',0],};
         let fbp={type:'Earnings',cumtype:'cumEarnings',data:['Flexible Benefit Plan'],cumulativeData:['Flexible Benefit Plan',0],};
+        let shift={type:'Earnings',cumtype:'cumEarnings',data:['Shift Allowance'],cumulativeData:['Shift Allowance',0],};
         let conveyance={type:'Earnings',cumtype:'cumEarnings',data:['Conveyance Allowance'],cumulativeData:['Conveyance Allowance',0],};
         let lta={type:'Earnings',cumtype:'cumEarnings',data:['Leave Travel Allowance'],cumulativeData:['Leave Travel Allowance',0],};
         let deductions={type:'',cumtype:'',data:['Deductions'],expand:false,cumulativeData:['Deductions',0],cumexpand:false};
@@ -101,6 +102,10 @@ export default class Payslip extends React.Component{
                 },
                 {
                     name:'Leave Travel Allowance',
+                    data:[],
+                },
+                {
+                    name:'Shift Allowance',
                     data:[],
                 },
                 {
@@ -204,18 +209,23 @@ export default class Payslip extends React.Component{
             fbp.cumulativeData[1]+=dataObj.data.earnings.fbp.val;
             chartData.earnings[2].data.push(dataObj.data.earnings.fbp.val);
 
-            lta.data.push(dataObj.data.earnings.lta.val);
-            lta.cumulativeData[1]+=dataObj.data.earnings.lta.val;
-            chartData.earnings[3].data.push(dataObj.data.earnings.lta.val);
-
             conveyance.data.push(dataObj.data.earnings.conveyance.val||0);
             conveyance.cumulativeData[1]+=dataObj.data.earnings.conveyance.val;     
-            chartData.earnings[4].data.push(dataObj.data.earnings.conveyance.val);
+            chartData.earnings[3].data.push(dataObj.data.earnings.conveyance.val);
 
-            earningsSum=dataObj.data.earnings.basic.val+dataObj.data.earnings.hra.val+dataObj.data.earnings.fbp.val+dataObj.data.earnings.lta.val+(dataObj.data.earnings.conveyance.val||0);
+            lta.data.push(dataObj.data.earnings.lta.val);
+            lta.cumulativeData[1]+=dataObj.data.earnings.lta.val;
+            chartData.earnings[4].data.push(dataObj.data.earnings.lta.val);
+
+            shift.data.push(dataObj.data.earnings.shift.val||0);
+            shift.cumulativeData[1]+=dataObj.data.earnings.shift.val;     
+            chartData.earnings[5].data.push(dataObj.data.earnings.shift.val);
+          
+
+            earningsSum=dataObj.data.earnings.basic.val+dataObj.data.earnings.hra.val+dataObj.data.earnings.fbp.val+dataObj.data.earnings.lta.val+(dataObj.data.earnings.conveyance.val||0)+(dataObj.data.earnings.shift.val||0);
             earnings.data.push(earningsSum)
             earnings.cumulativeData[1]+=earningsSum;
-            chartData.earnings[5].data.push(earningsSum);
+            chartData.earnings[6].data.push(earningsSum);
 
             /*Deductions*/
             pf.data.push(dataObj.data.deductions.pf.val);
@@ -298,6 +308,7 @@ export default class Payslip extends React.Component{
         gridData.push(hra);
         gridData.push(fbp);
         gridData.push(lta);
+        gridData.push(shift);
         gridData.push(conveyance);
         gridData.push(deductions);
         gridData.push(pf);

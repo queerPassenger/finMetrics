@@ -161,6 +161,9 @@ button{
     position: sticky;
     top: 0px;
     z-index: 9;
+    
+}
+.vheader{
     background: darkgrey;
 }
 .normal_row{
