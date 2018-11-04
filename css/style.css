@@ -166,6 +166,12 @@ button{
 .vheader{
     background: darkgrey;
 }
+.header_row >.smaller_cell{
+    background: darkgrey;
+}
+.header_row >.larger_cell{
+    background: darkgrey;
+}
 .normal_row{
     width:100%;
     float:left;
@@ -175,7 +181,7 @@ button{
     font-family: Mali;
     font-size: 16px;
     display: inline-block;
-    height: 40px;
+    height: 38px;
     text-align: center;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -191,7 +197,7 @@ button{
     font-family: Mali;
     font-size: 16px;
     display: inline-block;
-    height: 40px;
+    height: 38px;
     text-align: center;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -207,7 +213,7 @@ button{
     font-family: Mali;
     font-size: 16px;
     display: inline-block;
-    height: 40px;
+    height: 38px;
     text-align: center;
     padding-top: 5px;
     padding-bottom: 5px;
