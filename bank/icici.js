@@ -1,5 +1,6 @@
 const pdfreader=require('pdfreader');
 const fs=require('fs');
+const path = require("path");
 const monthArr=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function analyseData(_data){
     let expenditure=[['S.No','Value Date','Transaction Date','Transaction Remarks','Withdrawal']];
@@ -70,7 +71,7 @@ function fileReader(finYear,cb){
 
     let subArr=[];
     let remarksStr='';
-    let inputFilePath='C:/src/bankstatements/';
+    let inputFilePath=path.join(__dirname,'/../','repo/bankstatements/');
     inputFilePath+='fin'+finYear+'/';
     let fileName='fin'+finYear;
     if (!(fs.existsSync(inputFilePath+fileName+'.pdf'))){

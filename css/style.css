@@ -74,7 +74,7 @@ button{
     color: white;
     box-shadow: 1px 4px 6px #585858;
     opacity: 0.7;
-    font-family: Mali;
+    font-family: "Open Sans", sans-serif;
     z-index:9
 }
 .menu-wrapper{
@@ -178,7 +178,7 @@ button{
 }
 .cell{
     width: 300px;
-    font-family: Mali;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     display: inline-block;
     height: 38px;
@@ -194,7 +194,7 @@ button{
 }
 .larger_cell{
     width: 400px;
-    font-family: Mali;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     display: inline-block;
     height: 38px;
@@ -210,7 +210,7 @@ button{
 }
 .smaller_cell{
     width: 150px;
-    font-family: Mali;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     display: inline-block;
     height: 38px;
@@ -272,7 +272,7 @@ button{
     outline:1px solid green;
 }
 .payslip-header-label,.bank-header-label{
-    font-family: Mali;
+    font-family: "Open Sans", sans-serif;
     font-size: 20px;
     font-weight:bold;
     text-align: center;
@@ -287,7 +287,7 @@ button{
     border-top: 0px;
 }
 .left-panel-header{
-    font-family:Mali;
+    font-family:"Open Sans", sans-serif;
     font-size:20px;
     text-align:center;
     font-weight: bold;
@@ -317,7 +317,7 @@ button{
 .loading-wrapper{
     margin-top: 200px;
     margin-left: 41%;
-    font-family: Mali;
+    font-family: "Open Sans", sans-serif;
     font-weight: bold;
 }
 .cumulative-grid-wrapper{
@@ -363,7 +363,7 @@ button{
     margin-bottom:20px;
 }
 .grid-label{
-    font-family:Mali;
+    font-family:"Open Sans", sans-serif;
     font-size:18px;
     text-align:center;
     font-weight: bold

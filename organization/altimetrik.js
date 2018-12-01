@@ -2,6 +2,7 @@
 let pdfreader = require('pdfreader');
 let boilerPlate=require('../boilerplate.js');
 let fs = require('fs');
+const path = require("path");
 let monthArray=['April','May','June','July','August','September','October','November','December','January','February','March'];
 let fileList=[];
 let inputFilePath='';
@@ -122,8 +123,8 @@ const fileReader=(finYear,cb)=>{
     i=0;
     _finSet=[];
     fileList=[];
-    inputFilePath='C:/src/payslips/';
-    inputFilePath+='fin'+finYear+'/';
+    inputFilePath=path.join(__dirname,'/../','repo/payslips/');
+    inputFilePath+='fin'+finYear+'\\';
     let _year1=finYear.split('-')[0];
     let _year2=finYear.split('-')[1];
     
