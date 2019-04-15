@@ -11,6 +11,7 @@ export default class Payslip extends React.Component{
         this.expandClick="";
         this.cumexpandClick="";
         this._data=[];
+        this.speculateData=[];
         this.finYears=['2017-2018','2018-2019'];
         this.finYearSel=0;
         this._dataParser=['payPeriod','earnings','deductions']
@@ -32,7 +33,7 @@ export default class Payslip extends React.Component{
                 
                 let customizedData=_this.customizeData(JSON.parse(xhttp.responseText));
                 _this._data=customizedData.gridData;
-
+                _this._data=_this.addDummyColumn(_this._data);
                 console.log('_data',_this._data);
                 
                 _this.analyseFlag=true;
@@ -46,6 +47,12 @@ export default class Payslip extends React.Component{
         };
         xhttp.open("GET", "/payslip/analyse?finYear="+this.finYears[this.finYearSel], true);
         xhttp.send();
+    }
+    addDummyColumn(_data){
+        _data.map((_dataObj)=>{
+            _dataObj.data.splice(1,0,'dummy');
+        })
+        return _data;
     }
     customizeData(_data){
         this.expandClick="";
@@ -420,7 +427,6 @@ export default class Payslip extends React.Component{
     }
     componentDidUpdate(){
         if(this.expandClick){
-            console.log('NEW',document.getElementsByClassName(this.expandClick));
             var testarray = document.getElementsByClassName(this.expandClick);
             for(var i = 0; i < testarray.length; i++)
             {
@@ -434,7 +440,6 @@ export default class Payslip extends React.Component{
             this.expandClick='';
         }
         if(this.cumexpandClick){
-            console.log('NEW',document.getElementsByClassName(this.cumexpandClick));
             var testarray = document.getElementsByClassName(this.cumexpandClick);
             for(var i = 0; i < testarray.length; i++)
             {
@@ -448,9 +453,38 @@ export default class Payslip extends React.Component{
             this.cumexpandClick='';
         }
     }
-    
+    speculate(ind){
+        this.speculateData=JSON.parse(JSON.stringify(this._data));
+        this.speculateData.map(obj=>{
+            obj.data.splice(0,ind);
+            if(ind===0){
+                obj.cumulativeData.splice(1,1,1);
+            }
+            else{
+                obj.cumulativeData.splice(1,1,obj.data[0]);
+            }
+        });
+        this.setState({
+            _:''
+        })
+    }
+    handleSpeculateChange(){
+        let noOfMonths=this.refs['speculateFor'].value;
+        this.speculateData.map((obj,ind)=>{
+            if(ind===0){
+                obj.cumulativeData.splice(1,1,noOfMonths);
+            }
+            else{
+                obj.cumulativeData.splice(1,1,obj.data[0]*Number(noOfMonths));
+            }
+        });
+        this.setState({
+            _:''
+        })
+    }
     render(){
         console.log('this._data',this._data);
+        console.log('this.speculateData',JSON.stringify(this.speculateData));
         return(
             <div className="payslip-wrapper">
                 <div className="payslip-header-label">
@@ -474,14 +508,51 @@ export default class Payslip extends React.Component{
                         :
                             <div className="right-panel-content">
                                 <div className="grid-super-wrapper">
-                                    <div className="grid-wrapper" >
-                                        
+                                    {this.speculateData.length>0 && 
+                                        <div className="cumulative-grid-wrapper">
+                                            <div className="title">
+                                                Speculatioin
+                                            </div>
+                                            {this.speculateData.map((data,ind)=>{
+                                                return(
+                                                    <div className={("row ")+data.cumtype+(data.cumtype!==''?" hide":"")}>
+                                                        {data.cumulativeData.map((subData,subInd)=>{                                        
+                                                            return(
+                                                                <div className={(ind===0 || subInd===0?ind==0?"cell vheader":"cell rheader":"cell")+(data.type===''?" bold":"")} >
+                                                                    {ind===0 && subInd===1?
+                                                                        <input type="text" value={subData} ref="speculateFor" onChange={this.handleSpeculateChange.bind(this)} />
+                                                                    :
+                                                                        <span className={("label")+(data.type!=='' && subInd===0?" subH":" ")}>
+                                                                            {subData?subData:0}
+                                                                        </span>
+                                                                    }
+                                                                    {data.hasOwnProperty('cumexpand') && subInd===0?
+                                                                        <span className="expand" onClick={this.handleExp.bind(this,data,'cumexpand','cum'+subData,'cumexpandClick')}>
+                                                                            {data.cumexpand?"-":"+"}
+                                                                        </span>
+                                                                    :
+                                                                        null
+                                                                    }
+                                                                </div>
+                                                            )
+                                                        })}
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    }
+                                    <div className="grid-wrapper" >                                        
                                         {this._data.map((data,ind)=>{
                                             return(
                                                 <div className={(ind===0?"header_row ":"normal_row ")+data.type+(data.type!==''?" hide":"")}>
                                                     {data.data.map((subData,subInd)=>{                                        
                                                         return(
                                                             <div className={(ind===0 || subInd===0?ind==0?"cell vheader":"cell rheader":"cell")+(data.type===''?" bold":"")} >
+                                                                {ind===0?
+                                                                    <span  className="" onClick={this.speculate.bind(this,subInd)}>#</span>
+                                                                :
+                                                                    null
+                                                                }
                                                                 <span className={("label")+(data.type!=='' && subInd===0?" subH":" ")}>
                                                                     {subData?subData:0}
                                                                 </span>
@@ -523,6 +594,7 @@ export default class Payslip extends React.Component{
                                             )
                                         })}
                                     </div>
+                                    
                                 </div>  
                                 <div className="chart-super-wrapper">
                                     <div className="chart-wrapper" id="earnings"> 

@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "webpack-dev-server --progress --colors",
     "build": "webpack -p",
-    "bb": "webpack -p && node index.js",
-    "start": "node index.js"
+    "bb": "webpack -p && node server.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
