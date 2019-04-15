@@ -139,7 +139,7 @@ button{
 }
 
 .grid-wrapper{
-    float: left;
+    /* float: left;
     margin-top: 56px;
     margin-bottom: 20px;
     width: 1209px;
@@ -148,7 +148,19 @@ button{
     box-shadow: 5px 4px 6px grey;
     margin-left: 2%;
     height: 324px;
-    box-shadow: 1px 1px 14px grey;
+    box-shadow: 1px 1px 14px grey; */
+    width: 100%;
+    float: left;
+    white-space: nowrap;
+    overflow: auto;
+}
+.grid-wrapper .header_row .vheader:first-child{
+    position: absolute;
+    background:gray;
+}
+.grid-wrapper .rheader{
+    position: absolute;
+    background:gray;
 }
 .row{
     width:100%;
@@ -158,7 +170,6 @@ button{
     width:100%;
     float:left;
     font-weight: bold;
-    position: sticky;
     top: 0px;
     z-index: 9;
     
@@ -323,6 +334,7 @@ button{
 .cumulative-grid-wrapper{
     margin-left: 25%;
     margin-top: 50px;
+    margin-bottom: 20px;
     float: left;
     width: 605px;
     box-shadow: 1px 1px 14px grey;

@@ -20,8 +20,14 @@ function rawData(cb){
         data:[],
     };
     let count=1;  
-
-    new pdfreader.PdfReader().parseFileItems(inputFilePath+fileList[i]+inputFileExt,(err, item)=>{      
+    let fileName=inputFilePath+fileList[i]+inputFileExt;
+    if(fileName.indexOf('March-2019')!==-1){
+        maxPageCount=3;
+    }
+    else{
+        maxPageCount=2;
+    }
+    new pdfreader.PdfReader().parseFileItems(fileName,(err, item)=>{      
         if (!item || item.page){        
             if(count===maxPageCount){
                 count=1;
@@ -143,12 +149,12 @@ const fileReader=(finYear,cb)=>{
 
     rawData((_object)=>{        
         let obj=analyseData(_object);
-        /* fs.writeFile("./des/analysedData.json",JSON.stringify(_object),(err)=>{
-            if(!err){
-                console.log('DONE');
+        // fs.writeFile("/analysedData.json",JSON.stringify(_object),(err)=>{
+        //     if(!err){
+        //         console.log('DONE');
                 
-            }
-        }) */
+        //     }
+        // }) 
         cb(obj);
        
         
