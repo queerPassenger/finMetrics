@@ -12,7 +12,7 @@ export default class Payslip extends React.Component{
         this.cumexpandClick="";
         this._data=[];
         this.speculateData=[];
-        this.finYears=['2017-2018','2018-2019'];
+        this.finYears=['2017-2018','2018-2019','2019-2020'];
         this.finYearSel=0;
         this._dataParser=['payPeriod','earnings','deductions']
         this.analyseFlag=false;
@@ -34,8 +34,6 @@ export default class Payslip extends React.Component{
                 let customizedData=_this.customizeData(JSON.parse(xhttp.responseText));
                 _this._data=customizedData.gridData;
                 _this._data=_this.addDummyColumn(_this._data);
-                console.log('_data',_this._data);
-                
                 _this.analyseFlag=true;
                 _this.loading=false;
                 _this.setState({
@@ -194,7 +192,6 @@ export default class Payslip extends React.Component{
 
 
         _data.map(dataObj=>{
-            console.log("data inside map",dataObj);
             let earningsSum=0;
             let deductionsSum=0;
             let othersSum=0;
@@ -483,8 +480,6 @@ export default class Payslip extends React.Component{
         })
     }
     render(){
-        console.log('this._data',this._data);
-        console.log('this.speculateData',JSON.stringify(this.speculateData));
         return(
             <div className="payslip-wrapper">
                 <div className="payslip-header-label">
