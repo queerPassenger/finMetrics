@@ -7,7 +7,7 @@ export default class Bank extends React.Component{
             _:''
         };
         this._data=[];
-        this.finYears=['2017-2018','2018-2019'];
+        this.finYears=['2017-2018','2018-2019','2019-2020'];
         this.finYearSel=0;
         this.analyseFlag=false;
         this.loading=false;
@@ -48,7 +48,6 @@ export default class Bank extends React.Component{
         });
     }
     render(){
-        console.log('this._data',this._data);
         return(
             <div className="bank-wrapper">
                 <div className="bank-header-label">
